@@ -20,7 +20,7 @@ export default {
 		replace({
 			process: JSON.stringify({
 				env: {
-					apiUrl: production ? '' : 'http://localhost:8080/api'
+					apiUrl: production ? 'api' : 'http://localhost:8080/api'
 				},
 			}),
 		}),
