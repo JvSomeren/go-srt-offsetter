@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -71,6 +72,9 @@ func listDirectoryContent(dirName string) (content []os.FileInfo, err error) {
 	if err != nil {
 		return
 	}
+
+	// sort alphabetically
+	sort.Slice(content, func(i, j int) bool { return content[i].Name() < content[j].Name() })
 
 	return
 }
