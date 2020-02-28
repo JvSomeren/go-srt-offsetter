@@ -1,0 +1,8 @@
+.DS_Store
+
+# ignore build output
+server/server
+
+# ignore test directories
+server/movies
+server/tv-shows
