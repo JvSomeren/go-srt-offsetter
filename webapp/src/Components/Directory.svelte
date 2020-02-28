@@ -17,9 +17,11 @@
   };
 </script>
 
-<li on:click={() => expanded = !expanded}>{info.name}</li>
+<li on:click={() => expanded = !expanded}><span class="font-mono">{expanded ? '-' : '+'}</span> {info.name}</li>
 {#if expanded}
-  <ul transition:slide="{{ duration: 300, easing: quartOut }}">
+  <ul
+    class="pl-4"
+    transition:slide="{{ duration: 300, easing: quartOut }}">
     {#each info.files as m}
         <svelte:self 
           info={m}
@@ -33,3 +35,7 @@
     {/each}
   </ul>
 {/if}
+
+<style>
+
+</style>

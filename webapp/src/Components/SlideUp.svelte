@@ -90,7 +90,7 @@
 	}
 
 	.btn {
-		@apply py-1 px-3 rounded
+		@apply py-1 px-3 rounded outline-none
 	}
 
 	.btn-red {

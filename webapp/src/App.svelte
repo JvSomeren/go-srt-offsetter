@@ -3,37 +3,30 @@
 	import Tailwindcss from './Tailwindcss.svelte';
 	import Directory from './Components/Directory.svelte';
 	import SlideUp from './Components/SlideUp.svelte';
-  import { slideUp } from './stores.js';
+  import { slideUp } from './stores';
 
 	let media = [];
 
 	const handleUpdatePath = (e) => {
 		slideUp.updatePath(e.detail.path);
-
-		// const data = {
-		// 	subtitle: event.detail.path,
-		// 	offset: event.detail.offset,
-		// };
-		// const res = fetch(`${process.env.apiUrl}/subtitle`, {
-		// 	method: 'PUT',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 	},
-		// 	body: JSON.stringify(data),
-		// })
-		// 	.then(res => res.json())
-		// 	.then(res => console.log(res));
 	}
 
 	onMount(async () => {
 		const res = await fetch(`${process.env.apiUrl}/media`);
-		media = await res.json();
-	})
+			
+		try {
+			media = await res.json();
+		} catch(e) {
+			console.error('no json');
+		}
+	});
 </script>
 
-<main>
-	<h1>Subtitle offsetter</h1>
+<header class="p-2 pt-3">
+	<h1 class="text-3xl font-bold text-center font-mono">Subtitle offsetter</h1>
+</header>
 
+<main>
 	<section>
 		<ul>
 			{#each media as m, i }
@@ -43,10 +36,10 @@
 			{/each}
 		</ul>
 	</section>
-
-	<SlideUp />
 </main>
 
-<style>
+<SlideUp />
 
+<style>
+	
 </style>
