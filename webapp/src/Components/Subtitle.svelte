@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { slideUp } from '../stores.js';
+  import { slideUp } from '../stores';
+  import { languages } from '../helpers';
 
   export let subtitle;
   export let parent;
@@ -15,4 +16,4 @@
   };
 </script>
 
-<span on:click={updateSubtitle}>Sub: {subtitle.name} ({subtitle.language})</span><br>
+<span on:click={updateSubtitle}>Sub: {languages[subtitle.language]}</span><br>

@@ -9,3 +9,8 @@ export const debounce = (fn, delay) => {
     }, delay);
   }
 };
+
+export const languages = {
+  'en': 'English',
+  'nl': 'Dutch',
+};
