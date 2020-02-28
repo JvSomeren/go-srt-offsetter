@@ -3,7 +3,7 @@ COPY webapp /webapp
 WORKDIR /webapp
 RUN npm install && npm run build --prod
 
-FROM golang:1.13.7-alphine AS GO_BUILD
+FROM golang:1.13-alphine AS GO_BUILD
 RUN apk add build-base
 COPY server /server
 WORKDIR /server
