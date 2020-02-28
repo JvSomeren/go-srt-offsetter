@@ -21,5 +21,5 @@ ENV PORT="8080" \
 STATIC_PATH="/webapp/" \
 MEDIA_PATH="/files/"
 
-EXPOSE 8080
-CMD ./server
+EXPOSE 8080/tcp
+ENTRYPOINT ./server
