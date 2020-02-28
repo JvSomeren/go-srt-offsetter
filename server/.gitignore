@@ -1,0 +1,6 @@
+# ignore build output
+server
+
+# ignore test directories
+movies
+tv-shows
