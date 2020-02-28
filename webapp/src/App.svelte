@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import Tailwindcss from './Tailwindcss.svelte';
 	import Directory from './Components/Directory.svelte';
 	import SlideUp from './Components/SlideUp.svelte';
   import { slideUp } from './stores.js';
