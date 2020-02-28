@@ -99,7 +99,8 @@ func CreateServer() *http.Server {
 	api := router.PathPrefix("/api/").Subrouter()
 	registerAPIRoutes(api)
 
-	spa := spaHandler{staticPath: "../webapp/public", indexPath: "index.html"}
+	staticPath := GetEnv("STATIC_PATH", "../webapp/public")
+	spa := spaHandler{staticPath: staticPath, indexPath: "index.html"}
 	router.PathPrefix("/").Handler(spa)
 
 	originsOk := handlers.AllowedOrigins([]string{`*`})
@@ -108,7 +109,7 @@ func CreateServer() *http.Server {
 
 	srv := &http.Server{
 		Handler:      handlers.CORS(originsOk, headersOk, methodsOk)(router),
-		Addr:         "127.0.0.1:8080",
+		Addr:         "127.0.0.1:" + GetEnv("PORT", "8080"),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}

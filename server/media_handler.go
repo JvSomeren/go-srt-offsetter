@@ -19,7 +19,7 @@ type subtitles map[string]string
 
 // ListMediaAndSubtitlesHandler makes a JSON response of nested media and subtitles files
 func ListMediaAndSubtitlesHandler(w http.ResponseWriter, req *http.Request) {
-	movies, err := scanDirectory("./")
+	movies, err := scanDirectory(GetEnv("MEDIA_PATH", "./"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -109,7 +109,7 @@ func UpdateSubtitleHandler(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	subtitle := "./" + params["subtitle"]
+	subtitle := GetEnv("MEDIA_PATH", "./") + params["subtitle"]
 	_, err := os.Stat(subtitle)
 	if os.IsNotExist(err) {
 		jsonResponse(w, map[string]interface{}{
