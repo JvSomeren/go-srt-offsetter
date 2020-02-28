@@ -15,11 +15,11 @@ RUN go build -o /go/bin/server
 FROM alpine:3.11
 COPY --from=JS_BUILD /webapp/public* ./webapp/
 COPY --from=GO_BUILD /go/bin/server ./
-VOLUME /media
+VOLUME /files
 
-ENV PORT 8080
-ENV STATIC_PATH /webapp/
-ENV MEDIA_PATH /media/
+ENV PORT="8080" \
+STATIC_PATH="/webapp/" \
+MEDIA_PATH="/files/"
 
-EXPOSE 8080
-CMD ./server
+EXPOSE 8080/tcp
+ENTRYPOINT ./server

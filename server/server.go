@@ -109,7 +109,7 @@ func CreateServer() *http.Server {
 
 	srv := &http.Server{
 		Handler:      handlers.CORS(originsOk, headersOk, methodsOk)(router),
-		Addr:         "127.0.0.1:" + GetEnv("PORT", "8080"),
+		Addr:         ":" + GetEnv("PORT", "8080"),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
