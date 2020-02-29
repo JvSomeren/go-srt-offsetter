@@ -101,7 +101,8 @@ func CreateServer() *http.Server {
 
 	staticPath := GetEnv("STATIC_PATH", "../webapp/public")
 	spa := spaHandler{staticPath: staticPath, indexPath: "index.html"}
-	router.PathPrefix("/").Handler(spa)
+	spaBasePath := GetEnv("SPA_BASE_PATH", "/")
+	router.PathPrefix(spaBasePath).Handler(spa)
 
 	originsOk := handlers.AllowedOrigins([]string{`*`})
 	headersOk := handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With"})
