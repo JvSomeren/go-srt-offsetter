@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/gorilla/handlers"
@@ -39,6 +40,7 @@ func (req customRequest) ValidateBody(params ...string) (values map[string]strin
 type spaHandler struct {
 	staticPath string
 	indexPath  string
+	basePath   string
 }
 
 func jsonResponse(w http.ResponseWriter, res interface{}, statusCode int) {
@@ -62,8 +64,12 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// remove basePath from path
+	path = strings.Replace(path, h.basePath, "", 1)
+
 	// prepend the path with the path to the static directory
 	path = filepath.Join(h.staticPath, path)
+	fmt.Println(path)
 
 	// check whether a file exists at the given path
 	_, err = os.Stat(path)
@@ -79,7 +85,7 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// otherwise, use http.FileServer to serve the static dir
-	http.FileServer(http.Dir(h.staticPath)).ServeHTTP(w, req)
+	http.StripPrefix(h.basePath, http.FileServer(http.Dir(h.staticPath))).ServeHTTP(w, req)
 }
 
 func healthCheck(w http.ResponseWriter, req *http.Request) {
@@ -100,9 +106,16 @@ func CreateServer() *http.Server {
 	registerAPIRoutes(api)
 
 	staticPath := GetEnv("STATIC_PATH", "../webapp/public")
-	spa := spaHandler{staticPath: staticPath, indexPath: "index.html"}
-	spaBasePath := GetEnv("SPA_BASE_PATH", "/")
-	router.PathPrefix(spaBasePath).Handler(spa)
+	basePath := GetEnv("BASE_PATH", "/")
+	spa := spaHandler{staticPath: staticPath, indexPath: "index.html", basePath: basePath}
+	router.PathPrefix(basePath).Handler(spa)
+
+	// redirect all root requests to the given basePath
+	if basePath != "/" {
+		router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, basePath, http.StatusPermanentRedirect)
+		})
+	}
 
 	originsOk := handlers.AllowedOrigins([]string{`*`})
 	headersOk := handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With"})
