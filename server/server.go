@@ -102,11 +102,12 @@ func registerAPIRoutes(router *mux.Router) {
 func CreateServer() *http.Server {
 	router := mux.NewRouter()
 
-	api := router.PathPrefix("/api/").Subrouter()
-	registerAPIRoutes(api)
-
 	staticPath := GetEnv("STATIC_PATH", "../webapp/public")
 	basePath := GetEnv("BASE_PATH", "/")
+
+	api := router.PathPrefix(basePath + "api/").Subrouter()
+	registerAPIRoutes(api)
+
 	spa := spaHandler{staticPath: staticPath, indexPath: "index.html", basePath: basePath}
 	router.PathPrefix(basePath).Handler(spa)
 
