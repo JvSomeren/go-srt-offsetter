@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"time"
 )
 
 type file struct {
@@ -18,15 +19,49 @@ type file struct {
 
 type subtitles map[string]string
 
-// ListMediaAndSubtitlesHandler makes a JSON response of nested media and subtitles files
-func ListMediaAndSubtitlesHandler(w http.ResponseWriter, req *http.Request) {
-	movies, err := scanDirectory(GetEnv("MEDIA_PATH", "./"))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+var mediaCache []file = nil
+
+// MediaCacheHandler starts the caching of media periodically. Returns stop
+func MediaCacheHandler(delayOptional ...time.Duration) chan bool {
+	delay := 30 * time.Second
+	if len(delayOptional) > 0 {
+		delay = delayOptional[0]
 	}
 
-	jsonResponse(w, movies, http.StatusOK)
+	stop := make(chan bool)
+
+	go func() {
+		for {
+			var err error
+			mediaCache, err = scanDirectory(GetEnv("MEDIA_PATH", "./"))
+			if err != nil {
+				mediaCache = nil
+			}
+
+			select {
+			case <-time.After(delay):
+			case <-stop:
+				return
+			}
+		}
+	}()
+
+	return stop
+}
+
+// ListMediaAndSubtitlesHandler makes a JSON response of nested media and subtitles files
+func ListMediaAndSubtitlesHandler(w http.ResponseWriter, req *http.Request) {
+	if len(mediaCache) == 0 {
+		movies, err := scanDirectory(GetEnv("MEDIA_PATH", "./"))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		jsonResponse(w, movies, http.StatusOK)
+	} else {
+		jsonResponse(w, mediaCache, http.StatusOK)
+	}
 }
 
 func scanDirectory(dirName string) (files []file, err error) {

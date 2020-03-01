@@ -65,7 +65,7 @@
     <h2 class="text-2xl font-medium truncate pl-2">
 			{$slideUp.parent.name}
 		</h2>
-		<h3 class="text-sm rounded-full bg-gray-200 text-gray-700 font-semibold mx-auto inline-block px-3 py-1 lowercase">{languages[$slideUp.subtitle.language]}</h3>
+		<h3 class="text-sm rounded-full bg-gray-200 text-gray-700 font-semibold mx-auto inline-block px-3 py-1 lowercase mt-1">{languages[$slideUp.subtitle.language]}</h3>
 
 		<div class="px-3 py-4">
 			<p>Current offset: {offsetContainer[$slideUp.path].currentOffset}ms</p>

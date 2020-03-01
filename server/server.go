@@ -69,7 +69,6 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	// prepend the path with the path to the static directory
 	path = filepath.Join(h.staticPath, path)
-	fmt.Println(path)
 
 	// check whether a file exists at the given path
 	_, err = os.Stat(path)
@@ -96,6 +95,8 @@ func registerAPIRoutes(router *mux.Router) {
 	router.HandleFunc("/health", healthCheck).Methods("GET")
 	router.HandleFunc("/media", ListMediaAndSubtitlesHandler).Methods("GET")
 	router.HandleFunc("/subtitle", UpdateSubtitleHandler).Methods("PUT")
+
+	MediaCacheHandler()
 }
 
 // CreateServer returns a pointer to a newly created http.Server
