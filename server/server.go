@@ -95,6 +95,8 @@ func registerAPIRoutes(router *mux.Router) {
 	router.HandleFunc("/health", healthCheck).Methods("GET")
 	router.HandleFunc("/media", ListMediaAndSubtitlesHandler).Methods("GET")
 	router.HandleFunc("/subtitle", UpdateSubtitleHandler).Methods("PUT")
+
+	MediaCacheHandler()
 }
 
 // CreateServer returns a pointer to a newly created http.Server
