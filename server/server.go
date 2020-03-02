@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-http-utils/etag"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
@@ -122,9 +123,10 @@ func CreateServer() *http.Server {
 	originsOk := handlers.AllowedOrigins([]string{`*`})
 	headersOk := handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+	corsHandler := handlers.CORS(originsOk, headersOk, methodsOk)(router)
 
 	srv := &http.Server{
-		Handler:      handlers.CORS(originsOk, headersOk, methodsOk)(router),
+		Handler:      etag.Handler(corsHandler, true),
 		Addr:         ":" + GetEnv("PORT", "8080"),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
