@@ -16,4 +16,11 @@
   };
 </script>
 
-<span on:click={updateSubtitle}>Sub: {languages[subtitle.language]}</span><br>
+<li
+  class="list-disc list-inside px-2"
+  on:click={updateSubtitle}>
+  Sub: {languages[subtitle.language]}
+</li>
+
+<style>
+</style>
