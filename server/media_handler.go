@@ -128,7 +128,7 @@ func scanForSubtitles(dirName string) (subs map[string]string, err error) {
 	for _, f := range content {
 		match := r.FindStringSubmatch(f.Name())
 		if match != nil {
-			subs[match[1]] = f.Name()
+			subs[f.Name()] = match[1]
 		}
 	}
 
