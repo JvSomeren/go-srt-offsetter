@@ -65,13 +65,13 @@
     <h2 class="text-2xl font-medium truncate pl-2">
 			{$slideUp.parent.name}
 		</h2>
-		<h3 class="text-sm rounded-full bg-gray-200 text-gray-700 font-semibold mx-auto inline-block px-3 py-1 lowercase mt-1">{languages[$slideUp.subtitle.language]}</h3>
+		<h3 class="text-sm rounded-full bg-gray-200 text-gray-700 font-semibold mx-auto ml-2 inline-block px-3 py-1 lowercase mt-1">{languages[$slideUp.subtitle.language]}</h3>
 
 		<div class="px-3 py-4">
-			<p>Current offset: {offsetContainer[$slideUp.path].currentOffset}ms</p>
+			<p>Current offset: <span class="font-bold">{offsetContainer[$slideUp.path].currentOffset}ms</span></p>
 		</div>
 
-    <div class="flex justify-around mx-auto mt-2 text-xs">
+    <div class="flex justify-around mx-auto mt-2 text-s">
       <button class="btn btn-red" on:click={() => onClick(-100)}>-100ms</button>
       <button class="btn btn-red" on:click={() => onClick(-50)}>-50ms</button>
       <button class="btn btn-green" on:click={() => onClick(50)}>+50ms</button>
@@ -90,7 +90,7 @@
 	}
 
 	.btn {
-		@apply py-1 px-3 rounded outline-none
+		@apply py-3 px-4 rounded outline-none
 	}
 
 	.btn-red {
